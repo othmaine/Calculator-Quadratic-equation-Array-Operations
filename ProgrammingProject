@@ -1,0 +1,402 @@
+import java.util.Scanner;
+import java.util.InputMismatchException;
+
+public class ProgrammingProject {
+
+    static int width, highst; // It will be used in the arrays part to unify the number of colomns and rows
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Welcome To Our program !");
+        System.out.println(
+                "Enter Your Section Do You Want .. \n 1- Calculator Section \n 2- Array Operation Section \n 3- Quadratic Equation Section \n 4- to exit");
+        String Choice = sc.next();
+        char check = chekerLoop4(Choice);
+
+        switch (check) { // The Main Switch
+            case '1': {
+                //Calculator's Section ------------------------------------------------------------------------------------
+                System.out.println("Welcome To Calculator's Section");
+                System.out.println(
+                        "Enter Number Of Operation Do You Want \n 1- ( + ).\n 2- ( - ).\n 3- ( * ).\n 4- ( / ).\n 5- To Exit");
+                Choice = sc.next();
+                check = chekerLoop5(Choice);
+
+                switch (check) { //Calculator's Switch
+                    case '1': { //+
+
+                        System.out.println("The result =" + getAddition(getFirstInputs(), getSecondInputs()));
+                        break;
+                    }
+                    case '2': {//-
+
+                        System.out.println("The result =" + getSubtraction(getFirstInputs(), getSecondInputs()));
+                        break;
+                    }
+                    case '3': {//*
+
+                        System.out.println("The result =" + getMultiplication(getFirstInputs(), getSecondInputs()));
+                        break;
+                    }
+                    case '4': {// /
+                        double firstNumber = getFirstInputs();
+                        double secondNumber = getSecondInputs();
+                        while (secondNumber == 0) {
+                            System.err.println("Cannot be divided by zero");
+                            secondNumber = getSecondInputs();
+                        }
+                        System.out.println("The result =" + getDivision(firstNumber, secondNumber));
+                        break;
+                    }
+                    case '5': {//Exit
+                        break;
+                    }
+
+                }
+                break;
+            }
+
+            case '2': {// Array's Switch
+
+                System.out.println("Welcome To Array Operations Section !");
+                System.out.println(" Enter the number of Operation you want to implement \n 1- ( + ) \n 2- ( - ) \n 3- ( * ) \n 4- to exit");
+                Choice = sc.next();
+                check = chekerLoop4(Choice);
+
+                switch (check) {
+                    //first condition for add operation----------------------------------------------------------------------------------------------
+
+                    case '1': {
+                        //take the size
+                        System.out.println(" Addition Operation Require Two Arrays From The Same SiZe.");
+
+                        highst = inputsCheker("Inter Number Of Rows For Your Arrays (A),(B): ");
+                        width = inputsCheker("Inter Number Of Columns For Your Arrays (A),(B): ");
+
+                        //inputs for first array 
+                        int[][] a = arays("A");
+
+                        //inputs for Second array
+                        int[][] b = arays("B");
+
+                        //implement addition operation
+                        int[][] s = sumArrays(a, b);
+
+                        //print the result array 
+                        printArrays(s);
+
+                        break;
+                    }
+
+                    // Second Operation Subtracion------------------------------------------------------------------------------------------
+                    case '2': {
+
+                        //take the size
+                        System.out.println(" The Subtraction Operation Require Two Arrays From The Same SiZe. ");
+                        highst = inputsCheker("Inter Number Of Rows For Your Arrays (A),(B): ");
+                        width = inputsCheker("Inter Number Of Columns For Your Arrays (A),(B): ");
+
+                        //inputs for first array 
+                        int[][] a = arays("A");
+
+                        //inputs for Second array 
+                        int[][] b = arays("B");
+
+                        //print the result array 
+                        int[][] s = subArrays(a, b);
+
+                        //print the result array 
+                        printArrays(s);
+                        break;
+                    }
+
+                    // Third Operation Miltiplication -------------------------------------------------------------------------------------------- 
+                    case '3': {
+
+                        // take the size for first array
+                        System.out.println(
+                                "Multiply Two Arrays Require : Number Of Columns For First Array =  Number Of Rows For Second Array");
+
+                        highst = inputsCheker("Inter Number Of Rows For Your First Array (A): ");
+                        width = inputsCheker("Inter Number Of Columns For Your  First Array(A): ");
+
+                        //inputs for first Array
+                        int[][] a = arays("A");
+
+                        // take the size for Second array
+                        highst = width;
+                        width = inputsCheker("Inter Number Of Columns For Your  Second Array,(B): ");
+
+                        //inputs for Second array 
+                        int[][] b = arays("B");
+
+                        //implement Array multiplication
+                        int[][] m = multiplication(a, b);
+
+                        //print the result array 
+                        printArrays(m);
+                        break;
+                    }
+                    case '4': {
+
+                    }
+                }
+                break;
+            }
+            //quadratic equation section
+            case '3': {
+
+                System.out.println("Welcom To Quadratic Equation's section \n ax^2+bx+c=0");
+                //take inputs
+                try {
+                    System.out.println("Enter Your Variables a , b ,c  By This Order");
+                    double a = inputsCheker("a=");
+                    double b = inputsCheker("b=");
+                    double c = inputsCheker("c=");
+
+                    //check a is't = 0
+                    boolean CHECK_a = check_a(a);
+                    if (CHECK_a) {
+                        System.out.println("unvalid equation , (a) can't be zero");
+                    } else {
+                        double calcNumberUnderSqr = calc_numOfSqu(a, b, c);
+
+                        //check Number under Squre root  is't < 0
+                        boolean Check_squ = check_numOfSqu(calcNumberUnderSqr);
+                        if (Check_squ) {
+
+                            System.out.println("this equation doesn't hava a real roots , these values evaluate to a negative number under the squre root");
+                            double Sqr = Math.sqrt(-calcNumberUnderSqr);
+                            print_root(b, a, Sqr, Check_squ);
+                        } else {
+                            double Sqr = Math.sqrt(calcNumberUnderSqr);
+                            print_root(b, a, Sqr, Check_squ);
+                        }
+
+                    }
+                } catch (InputMismatchException e) {
+                    System.err.print("Input numbers only");
+                }
+                break;
+            }
+
+            case '4': {
+                break;
+            }
+        }
+        System.out.println("THANK YOU FOR YOUR TIME...");
+    }
+
+// Array functions section ------------------------------------------------------------------------------------------------------------------*/ 
+//take inputs
+    static int[][] arays(String name) {
+        System.out.println("Matrix " + (name) + ":-");
+        int[][] m = new int[highst][width];
+        for (int i = 0; i < highst; i++) {
+            int j;
+
+            for (j = 0; j < width; j++) {
+
+                m[i][j] = inputsCheker((name) + "[" + i + "][" + j + "]=: ");
+            }
+        }
+
+        return m;
+
+    }
+
+    // print Array
+    static void printArrays(int[][] m) {
+        System.out.println("your matrix is:-");
+        for (int i = 0; i < (m.length); i++) {
+            int j;
+
+            for (j = 0; j < m[0].length; j++) {
+                System.out.print(m[i][j] + " ");
+            }
+            System.out.println("");
+        }
+    }
+
+    //implement sum Arrays
+    static int[][] sumArrays(int[][] a, int[][] b) {
+
+        int[][] m = new int[highst][width];
+
+        for (int i = 0; i < (highst); i++) {
+
+            for (int j = 0; j < width; j++) {
+                m[i][j] = a[i][j] + b[i][j];
+            }
+        }
+
+        return m;
+    }
+
+    //implement multiplication Arrays
+    static int[][] multiplication(int[][] a, int[][] b) {
+        int[][] m = new int[a.length][b[0].length];
+
+        for (int i = 0; i < (a.length); i++) {
+            for (int j = 0; j < b[0].length; j++) {
+                for (int k = 0; k < a[0].length; k++) {
+                    m[i][j] += a[i][k] * b[k][j];
+                }
+            }
+        }
+
+        return m;
+    }
+
+    //implement subtraction Arrays
+    static int[][] subArrays(int[][] a, int[][] b) {
+
+        int[][] m = new int[highst][width];
+
+        for (int i = 0; i < (highst); i++) {
+
+            for (int j = 0; j < width; j++) {
+                m[i][j] = a[i][j] - b[i][j];
+            }
+        }
+
+        return m;
+    }
+
+    //check from input
+    static int inputsCheker(String s) {
+        Scanner x = new Scanner(System.in);
+        int i = 0, cheker = 0;
+        do {
+            try {
+                System.out.print(s);
+                i = x.nextInt();
+                cheker = 0;
+            } catch (InputMismatchException e) {
+                System.err.println("Invalid choise");
+                System.out.println("Try again \n ");
+                x.next();
+                cheker = 1;
+            }
+        } while (cheker == 1);
+        return i;
+    }
+
+    // Quadratic Equation functions' section-------------------------------------------------------------------------------------
+    public static boolean check_a(double a) {   //function check a
+        if (a == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static double calc_numOfSqu(double a, double b, double c) { //function calculating result number under the squre root
+        double d = (b * b) - (4 * a * c);
+        return d;
+    }
+
+    public static boolean check_numOfSqu(double calc_numOfSqu) {            //function check the result number under the squre root
+        if (calc_numOfSqu < 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static void print_root(double b, double a, double sqr, boolean Check_squ) { //function print the root of equation directly
+        if (Check_squ) {
+            System.out.println("root 1(x1) is : " + (-b / (2 * a)) + '+' + (-sqr / (2 * a)) + 'i');
+            System.out.println("root 2 (x2) is : " + (-b / (2 * a)) + '+' + (sqr / (2 * a)) + 'i');
+        } else {
+
+            double root1 = (-b - sqr) / (2 * a);
+            double root2 = (-b + sqr) / (2 * a);
+            System.out.println("root 1(x1) is : " + root1);
+            System.out.println("root 2(x2) is : " + root2);
+        }
+    }
+    // Calculation functions' section----------------------------------------------------------------------------------------------------
+      
+     static char chekerLoop5(String input) {
+        while (input.length() > 1 || input.charAt(0) != '1' && input.charAt(0) != '2'
+                && input.charAt(0) != '3' && input.charAt(0) != '4' && input.charAt(0) != '5') {
+            Scanner sc = new Scanner(System.in);
+            System.err.println("Invalid choise ... Try again");
+            input = sc.next();
+        }
+        return input.charAt(0);
+    }
+    //get first input
+    public static double getFirstInputs() {
+        double num1 = inputsCheker2("Enter Your First Number");
+        return num1;
+    }
+
+    //get second input
+    public static double getSecondInputs() {
+        double num2 = inputsCheker2("Enter Your Second Number");
+        return num2;
+    }
+
+    //get addition 
+    static double getAddition(double num1, double num2) {
+        double sum = num1 + num2;
+
+        return sum;
+    }
+
+    //get Subtraction 
+    public static double getSubtraction(double num1, double num2) {
+        double sub = num1 - num2;
+        return sub;
+    }
+
+    //get Multiplication 
+    public static double getMultiplication(double num1, double num2) {
+        double mult = num1 * num2;
+        return mult;
+    }
+
+    //get division 
+    public static double getDivision(double num1, double num2) {
+        if (num2 == 0.0) {
+            return Double.parseDouble("Can't division by zero");
+        } else {
+            double div = num1 / num2;
+            return div;
+        }
+    }
+
+    //check input
+    static double inputsCheker2(String s) {
+        Scanner x = new Scanner(System.in);
+        double i = 0, cheker = 0;
+        do {
+            try {
+                System.out.println(s);
+                i = x.nextDouble();
+                cheker = 0;
+            } catch (InputMismatchException e) {
+                System.err.println("Invalid choise");
+                System.out.println("Try again \n ");
+                x.next();
+                cheker = 1;
+            }
+        } while (cheker == 1);
+        return i;
+    }
+
+    static char chekerLoop4(String input) {
+        while (input.length() > 1 || input.charAt(0) != '1' && input.charAt(0) != '2'
+                && input.charAt(0) != '3' && input.charAt(0) != '4') {
+            Scanner sc = new Scanner(System.in);
+            System.err.println("Invalid choise ... Try again");
+            input = sc.next();
+        }
+        return input.charAt(0);
+    }
+
+   
+}
